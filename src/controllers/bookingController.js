@@ -3,7 +3,7 @@ import Vehicle from "../models/Vehicle.js";
 import { rideDurationHours, addHours } from "../utils/duration.js";
 
 export const createBooking = async (req, res) => {
-    const { vehicleId, fromPincode, toPincode, startTime,endTime, customerId } = req.body;
+    const { vehicleId, fromPincode, toPincode, startTime, customerName } = req.body;
 
     try {
         // Validate vehicle existence
@@ -31,8 +31,7 @@ export const createBooking = async (req, res) => {
             toPincode,
             startTime: new Date(startTime),
             endTime: bookingEndTime,
-            bookingEndTime,
-            customerId
+            customerName
         });
         await newBooking.save();
         return res.status(201).json(newBooking);

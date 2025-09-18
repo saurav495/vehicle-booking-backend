@@ -21,6 +21,9 @@ const vehicleSchema = new mongoose.Schema({
         type: String,
         required: true 
     },
+    "imageUrl" : { 
+        type: String 
+    },
     "availabilityStatus" : { 
         type: Boolean,
         default: true 

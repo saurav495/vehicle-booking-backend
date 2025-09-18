@@ -2,6 +2,15 @@ import Vehicle from "../models/Vehicle.js";
 import Booking from "../models/Booking.js";
 import { rideDurationHours, addHours } from "../utils/duration.js";
 
+export const getAllVehicles = async (req, res) => {
+    try {
+        const vehicles = await Vehicle.find();
+        res.status(200).json(vehicles);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 export const createVehicle = async (req, res) => {
     try {
         const { name, type, capacity, rentalPricePerDay, tyers, imageUrl } = req.body;

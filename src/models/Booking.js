@@ -26,9 +26,8 @@ const bookingSchema = new mongoose.Schema({
         type: Number,
         required: false 
     },
-    "customerId" : {
+    "customerName" : {
         type: String,
-        ref: 'Customer',
         required: true 
     },
     "createdAt": {
