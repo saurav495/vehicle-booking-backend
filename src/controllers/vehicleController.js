@@ -44,9 +44,14 @@ export const availableVehicles = async (req, res) => {
         const estimatedRideDurationHours = rideDurationHours(fromPincode, toPincode);
         const endTime = addHours(new Date(startTime), estimatedRideDurationHours);
 
-        const availableVehicles = await Vehicle.find({
-            capacity: { $gte: capacityRequired }
+        let availableVehicles = await Vehicle.find({
+            capacity: Number(capacityRequired)
         });
+
+        if (availableVehicles.length === 0) {
+            availableVehicles = await Vehicle.find({ capacity: { $gt: capacityRequired } })
+              .sort({ capacity: 1 }); // ascending, nearest higher first
+          }
 
         const bookings = await Booking.find({
             $or: [
@@ -54,7 +59,7 @@ export const availableVehicles = async (req, res) => {
             ]
         });
 
-        const bookedVehicleIds = bookings.map(booking => booking.vehicleId);
+        const bookedVehicleIds = bookings.map(booking => booking.vehicleId.toString());
         const filteredVehicles = availableVehicles.filter(vehicle => !bookedVehicleIds.includes(vehicle._id.toString()));
 
         res.status(200).json(filteredVehicles);
